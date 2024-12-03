@@ -116,13 +116,12 @@ function createComment() {
   while (commentsIdsSet.has(id)) {
     id = getRandomInt(0, 750);
   }
-  const messageId = id;
   const authorAvatar = `img/avatar-${getRandomInt(1, 6)}.svg`;
   const messageText = getRandomArrayElements(messages, 2).join(" ");
-  const authorName = getRandomArrayElements(names);
+  const authorName = getRandomArrayElements(names).join("");
 
   return {
-    id: messageId,
+    id,
     avatar: authorAvatar,
     message: messageText,
     name: authorName
@@ -141,18 +140,17 @@ function createComments(maxCommentsCount) {
 }
 
 function createPhotoObject(id) {
-  const photoId = id;
   const photoUrl = `photos/${getRandomInt(1, 25)}.jpg`;
-  const photoDescription = getRandomArrayElements(photoDescriptions);
+  const photoDescription = getRandomArrayElements(photoDescriptions).join("");
   const likesQuantity = getRandomInt(15, 200);
   const comments = createComments(30);
 
   return {
-    id: photoId,
+    id,
     url: photoUrl,
     description: photoDescription,
     likes: likesQuantity,
-    comments: comments
+    comments
   };
 }
 
@@ -165,4 +163,4 @@ function createPhotos(quantity) {
   return result;
 }
 
-const PHOTOS = createPhotos(25);
+const photos = createPhotos(25);
