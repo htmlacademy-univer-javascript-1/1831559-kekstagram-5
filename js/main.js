@@ -1,4 +1,4 @@
-const NAMES = [
+const names = [
   "Александр",
   "Александра",
   "Алексей",
@@ -51,7 +51,7 @@ const NAMES = [
   "Роман"
 ];
 
-const MESSAGES = [
+const messages = [
   "Всё отлично!",
   "В целом всё неплохо. Но не всё.",
   "Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.",
@@ -85,8 +85,8 @@ function createComment() {
   }
   const messageId = id;
   const authorAvatar = `img/avatar-${getRandomInt(1, 6)}.svg`;
-  const messageText = getRandomArrayElements(MESSAGES, 2).join(" ");
-  const authorName = getRandomArrayElements(NAMES);
+  const messageText = getRandomArrayElements(messages, 2).join(" ");
+  const authorName = getRandomArrayElements(names);
 
   return {
     id: messageId,
