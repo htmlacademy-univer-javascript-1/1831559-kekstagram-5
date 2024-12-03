@@ -66,10 +66,14 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
 }
 
-function getRandomArrayElement(array) {
+function getRandomArrayElements(array, elementsCount = 1) {
   const arrayLen = array.length;
-  const index = getRandomInt(0, arrayLen - 1);
-  return array[index];
+  const result = [];
+  for (let i = 0; i < elementsCount; i++) {
+    const index = getRandomInt(0, arrayLen - 1);
+    result.push(array[index]);
+  }
+  return result;
 }
 
 const commentsIdsSet = new Set();
@@ -81,8 +85,8 @@ function createComment() {
   }
   const messageId = id;
   const authorAvatar = `img/avatar-${getRandomInt(1, 6)}.svg`;
-  const messageText = getRandomArrayElement(MESSAGES);
-  const authorName = getRandomArrayElement(NAMES);
+  const messageText = getRandomArrayElements(MESSAGES, 2).join(" ");
+  const authorName = getRandomArrayElements(NAMES);
 
   return {
     id: messageId,
