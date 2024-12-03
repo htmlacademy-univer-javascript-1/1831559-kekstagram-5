@@ -60,6 +60,39 @@ const messages = [
   "Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!"
 ];
 
+const photoDescriptions = [
+  "Удивительная красота",
+  "Вдохновляющая композиция",
+  "Искренняя эмоция",
+  "Чудесный момент",
+  "Глубокое впечатление",
+  "Идеальный свет",
+  "Теплая атмосфера",
+  "Великолепный пейзаж",
+  "Сказочная нежность",
+  "Приятная гармония",
+  "Завораживающая перспектива",
+  "Живая деталь",
+  "Невероятная природа",
+  "Трогательная искренность",
+  "Радостная энергия",
+  "Искусный баланс",
+  "Волшебное мгновение",
+  "Чистое вдохновение",
+  "Яркие эмоции",
+  "Потрясающая игра",
+  "Летнее тепло",
+  "Ласковая улыбка",
+  "Прекрасный закат",
+  "Душевная глубина",
+  "Нежное прикосновение",
+  "Пленяющий взгляд",
+  "Эстетическая гармония",
+  "Энергия жизни",
+  "Чистая радость",
+  "Бесконечное спокойствие"
+];
+
 function getRandomInt(min, max) {
   const minCeiled = Math.ceil(min);
   const maxFloored = Math.floor(max);
@@ -110,7 +143,7 @@ function createComments(maxCommentsCount) {
 function createPhotoObject(id) {
   const photoId = id;
   const photoUrl = `photos/${getRandomInt(1, 25)}.jpg`;
-  const photoDescription = `Описание фотографии с id: ${photoId}`;
+  const photoDescription = getRandomArrayElements(photoDescriptions);
   const likesQuantity = getRandomInt(15, 200);
   const comments = createComments(30);
 
