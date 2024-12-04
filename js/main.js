@@ -117,7 +117,7 @@ function createComment() {
     id = getRandomInt(0, 750);
   }
   const authorAvatar = `img/avatar-${getRandomInt(1, 6)}.svg`;
-  const messageText = getRandomArrayElements(messages, 2).join(" ");
+  const messageText = getRandomArrayElements(messages, 2).join("\n");
   const authorName = getRandomArrayElements(names).join("");
 
   return {
@@ -140,7 +140,7 @@ function createComments(maxCommentsCount) {
 }
 
 function createPhotoObject(id) {
-  const photoUrl = `photos/${getRandomInt(1, 25)}.jpg`;
+  const photoUrl = `photos/${id}.jpg`;
   const photoDescription = getRandomArrayElements(photoDescriptions).join("");
   const likesQuantity = getRandomInt(15, 200);
   const comments = createComments(30);
