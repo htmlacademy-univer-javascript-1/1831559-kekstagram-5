@@ -5,7 +5,7 @@ const fragment = document.createDocumentFragment();
 
 const pictureTemplate = document.querySelector("#picture").content.querySelector(".picture");
 
-const photosData = createMockPhotoData();
+export const photosData = createMockPhotoData();
 photosData.forEach((photo) => {
   const pictureElement = pictureTemplate.cloneNode(true);
 
