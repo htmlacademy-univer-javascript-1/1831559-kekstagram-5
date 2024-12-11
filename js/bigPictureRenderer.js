@@ -37,6 +37,10 @@ function createCommentsElement(parentElement, photoObject) {
 
 function openBigPicture() {
   document.querySelector(".pictures").addEventListener("click", (ev) => {
+    if (!ev.target.classList.contains("picture__img")) {
+      return;
+    }
+
     document.querySelector("body").classList.add("modal-open");
     const bigPicture = document.querySelector(".big-picture");
     bigPicture.classList.remove("hidden");
