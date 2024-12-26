@@ -8,28 +8,45 @@ function fillSocialInfoElement(parentElement, photoObject) {
   parentElement.querySelector(".social__caption").textContent = photoObject.description;
 }
 
-function fillCommentsElement(parentElement, photoObject) {
+function createCommentElement(comment) {
+  const commentItem = document.createElement("li");
+  commentItem.classList.add("social__comment");
+
+  const image = document.createElement("img");
+  image.classList.add("social__picture");
+  image.setAttribute("src", comment.avatar);
+  image.setAttribute("alt", comment.name);
+  image.setAttribute("width", "35");
+  image.setAttribute("height", "35");
+  commentItem.appendChild(image);
+
+  const commentText = document.createElement("p");
+  commentText.classList.add("social__text");
+  commentText.textContent = comment.message;
+  commentItem.appendChild(commentText);
+
+  return commentItem;
+}
+
+function loadComments(parentElement, comments, commentsShown) {
   const commentsContainer = parentElement.querySelector(".social__comments");
-  commentsContainer.innerHTML = "";
+  const commentsToShow = comments.slice(commentsShown, commentsShown + 5);
 
-  photoObject.comments.forEach((comment) => {
-    const commentItem = document.createElement("li");
-    commentItem.classList.add("social__comment");
-
-    const image = document.createElement("img");
-    image.classList.add("social__picture");
-    image.setAttribute("src", comment.avatar);
-    image.setAttribute("alt", comment.name);
-    image.setAttribute("width", "35");
-    image.setAttribute("height", "35");
-    commentItem.appendChild(image);
-
-    const commentText = document.createElement("p");
-    commentText.textContent = comment.message;
-    commentItem.appendChild(commentText);
-
-    commentsContainer.appendChild(commentItem);
+  commentsToShow.forEach((comment) => {
+    const commentElement = createCommentElement(comment);
+    commentsContainer.appendChild(commentElement);
   });
+
+  commentsShown += commentsToShow.length;
+  parentElement.querySelector(".social__comment-count").firstChild.textContent = `${commentsShown} из `;
+
+
+  const commentsLoader = document.querySelector(".comments-loader");
+  if (commentsShown >= comments.length && commentsLoader) {
+    commentsLoader.classList.add("hidden");
+  }
+
+  return commentsShown;
 }
 
 function showBigPicture(photoObject) {
@@ -37,12 +54,16 @@ function showBigPicture(photoObject) {
   document.querySelector("body").classList.add("modal-open");
 
   bigPicture.classList.remove("hidden");
-  bigPicture.querySelector(".social__comment-count").classList.add("hidden");
-  bigPicture.querySelector(".comments-loader").classList.add("hidden");
-
   setChildImageSource(bigPicture, photoObject);
   fillSocialInfoElement(bigPicture, photoObject);
-  fillCommentsElement(bigPicture, photoObject);
+
+  bigPicture.querySelector(".social__comments").innerHTML = "";
+
+  let commentsShown = 0;
+  commentsShown = loadComments(bigPicture, photoObject.comments, commentsShown);
+  document.querySelector(".comments-loader").addEventListener("click", () => {
+    commentsShown = loadComments(bigPicture, photoObject.comments, commentsShown);
+  });
 }
 
 function hideBigPicture() {
