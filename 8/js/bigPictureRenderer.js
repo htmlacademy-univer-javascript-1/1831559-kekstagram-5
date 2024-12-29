@@ -1,17 +1,14 @@
-import { photosData } from "./picturesRenderer.js";
-
-function createImageElement(parentElement, photoObject) {
+function setChildImageSource(parentElement, photoObject) {
   parentElement.querySelector("img").setAttribute("src", photoObject.url);
 }
 
-function createSocialInfoElement(parentElement, photoObject) {
+function fillSocialInfoElement(parentElement, photoObject) {
   parentElement.querySelector(".likes-count").textContent = photoObject.likes;
   parentElement.querySelector(".comments-count").textContent = photoObject.comments.length;
   parentElement.querySelector(".social__caption").textContent = photoObject.description;
 }
 
-
-function createCommentsElement(parentElement, photoObject) {
+function fillCommentsElement(parentElement, photoObject) {
   const commentsContainer = parentElement.querySelector(".social__comments");
   commentsContainer.innerHTML = "";
 
@@ -35,39 +32,67 @@ function createCommentsElement(parentElement, photoObject) {
   });
 }
 
-function openBigPicture() {
-  document.querySelector(".pictures").addEventListener("click", (ev) => {
-    if (!ev.target.classList.contains("picture__img")) {
-      return;
+function showBigPicture(photoObject) {
+  const bigPicture = document.querySelector(".big-picture");
+  document.querySelector("body").classList.add("modal-open");
+
+  bigPicture.classList.remove("hidden");
+  bigPicture.querySelector(".social__comment-count").classList.add("hidden");
+  bigPicture.querySelector(".comments-loader").classList.add("hidden");
+
+  setChildImageSource(bigPicture, photoObject);
+  fillSocialInfoElement(bigPicture, photoObject);
+  fillCommentsElement(bigPicture, photoObject);
+}
+
+function hideBigPicture() {
+  const bigPicture = document.querySelector(".big-picture");
+  bigPicture.classList.add("hidden");
+  document.body.classList.remove("modal-open");
+}
+
+function handlePictureClick(event, photosData) {
+  if (!event.target.classList.contains("picture__img")) {
+    return;
+  }
+
+  const photoObject = photosData.find(
+    (photo) => photo.url === event.target.getAttribute("src")
+  );
+
+  if (photoObject) {
+    showBigPicture(photoObject);
+    addCloseListeners();
+  }
+}
+
+function addCloseListeners() {
+  const pictureCancel = document.querySelector("#picture-cancel");
+
+  const handleCancelClick = () => {
+    hideBigPicture();
+    removeCloseListeners();
+  };
+
+  const handleEscKey = (event) => {
+    if (event.key === "Escape") {
+      hideBigPicture();
+      removeCloseListeners();
     }
+  };
 
-    document.querySelector("body").classList.add("modal-open");
-    const bigPicture = document.querySelector(".big-picture");
-    bigPicture.classList.remove("hidden");
-    bigPicture.querySelector(".social__comment-count").classList.add("hidden");
-    bigPicture.querySelector(".comments-loader").classList.add("hidden");
+  pictureCancel.addEventListener("click", handleCancelClick);
+  document.addEventListener("keydown", handleEscKey);
 
-    const photoObject = photosData.find((photo) => photo.url === ev.target.getAttribute("src"));
+  function removeCloseListeners() {
+    pictureCancel.removeEventListener("click", handleCancelClick);
+    document.removeEventListener("keydown", handleEscKey);
+  }
+}
 
-    createImageElement(bigPicture, photoObject);
-    createSocialInfoElement(bigPicture, photoObject);
-    createCommentsElement(bigPicture, photoObject);
+export function initBigPictureFeature(photosData) {
+  document.querySelector(".pictures").addEventListener("click", (event) => {
+    handlePictureClick(event, photosData);
   });
 }
 
-function closeBigPicture() {
-  document.querySelector("#picture-cancel").addEventListener("click", () => {
-    document.querySelector(".big-picture").classList.add("hidden");
-    document.querySelector("body").classList.remove("modal-open");
-  });
-
-  document.addEventListener("keydown", (evt) => {
-    if (evt.key === "Escape") {
-      document.querySelector(".big-picture").classList.add("hidden");
-      document.querySelector("body").classList.remove("modal-open");
-    }
-  });
-}
-
-openBigPicture();
-closeBigPicture();
